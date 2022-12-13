@@ -1,5 +1,5 @@
 # ssh_lib
-Fully tested python 3 library that reduce paramkio complexity
+Fully tested python 3 library that reduce paramkio complexity,
 For ubuntu apt-install python-paramiko and use as shown below
 
 ```python
