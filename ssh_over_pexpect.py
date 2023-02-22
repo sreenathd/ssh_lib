@@ -3,7 +3,7 @@ import pexpect
 def tries(c):
     for tries in range(5):
         c.send('\r')
-        cli = c.expect([pexpect.TIMEOUT, '$ ' , 'T440:~$ '], timeout=1)
+        cli = c.expect([pexpect.TIMEOUT, '$ ' , '*~$ '], timeout=1)
         if cli!=0: 
             break
 
