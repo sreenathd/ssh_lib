@@ -25,12 +25,24 @@ class sshPexpect:
         self.c.sendline(cmd)
         self.tries(self.c)
         
+    def send_cmd_passwd(self, cmd, passwd=None):
+        self.c.sendline(cmd)
+        self.c.expect('password:', timeout=120)
+        if passwd:
+            self.c.sendline(passwd)
+        else:
+            self.c.sendline(self.password)
+        self.tries(self.c)
+        
     def close_session(self):
         self.c.close()
         self.log_file.close()
 
 if __name__ == '__main__':
-    sh_shell = sshPexpect('user','pswd','127.0.0.1')
-    sh_shell.connect()
-    sh_shell.send_cmd('ls -latr')
+    server_list = [127.0.0.1]
+    for server in server_list:
+        sh_shell = sshPexpect('user','pswd',server)
+        sh_shell.connect()
+        sh_shell.send_cmd('sudo su fxall')
+        sh_shell.send_cmd('ls -latr')
     
