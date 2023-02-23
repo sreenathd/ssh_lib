@@ -5,7 +5,7 @@ class sshPexpect:
         self.username = username
         self.password = passwd
         self.servername = servername
-        self.log_file = open(logfile, "bw")
+        self.log_file = open(logfile, "w")
     
     def tries(self,c):
         for tries in range(5):
@@ -18,12 +18,12 @@ class sshPexpect:
         self.c = pexpect.spawn('/usr/bin/ssh ' + self.username+ '@' + self.servername, timeout=120)
         self.c.logfile = self.log_file
         self.c.expect('password:', timeout=120)
-        self.c.sendline(self.passwd)
-        tries(self.c)
+        self.c.sendline(self.password)
+        self.tries(self.c)
     
     def send_cmd(self, cmd):
         self.c.sendline(cmd)
-        tries(self.c)
+        self.tries(self.c)
         
     def close_session(self):
         self.c.close()
