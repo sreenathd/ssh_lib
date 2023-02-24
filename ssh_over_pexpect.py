@@ -47,7 +47,7 @@ if __name__ == '__main__':
     for server in server_list:
         sh_shell = sshPexpect('user','pswd',server, logfile = '/tmp/' + server)
         sh_shell.connect()
-        sh_shell.send_cmd_passwd('sudo su fxall')
+        sh_shell.send_cmd_passwd('sudo su - fxall')
         sh_shell.send_cmd('ls -latr')
     compare_logfiles(log_file_list)
             
