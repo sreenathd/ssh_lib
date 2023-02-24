@@ -38,11 +38,16 @@ class sshPexpect:
         self.c.close()
         self.log_file.close()
 
+
+        
 if __name__ == '__main__':
-    server_list = [127.0.0.1]
+    server_list = ['127.0.0.1']
+    log_file_list = ['/tmp/' + i for i in server_list]
     for server in server_list:
-        sh_shell = sshPexpect('user','pswd',server)
+        sh_shell = sshPexpect('user','pswd',server, logfile = '/tmp/' + server)
         sh_shell.connect()
         sh_shell.send_cmd('sudo su fxall')
         sh_shell.send_cmd('ls -latr')
+    compare_logfiles(log_file_list)
+            
     
