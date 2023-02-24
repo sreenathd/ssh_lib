@@ -10,7 +10,7 @@ class sshPexpect:
     def tries(self,c):
         for tries in range(5):
             c.send('\r')
-            cli = c.expect([pexpect.TIMEOUT, '$ ' , '*~$ '], timeout=1)
+            cli = c.expect([pexpect.TIMEOUT, '$ ' , '~$ '], timeout=1)
             if cli!=0: 
                 break
                 
