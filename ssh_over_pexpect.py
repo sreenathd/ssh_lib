@@ -27,7 +27,8 @@ class sshPexpect:
         
     def send_cmd_passwd(self, cmd, passwd=None):
         self.c.sendline(cmd)
-        self.c.expect('password:', timeout=120)
+        prompt = self.username + ':'
+        self.c.expect(prompt, timeout=120)
         if passwd:
             self.c.sendline(passwd)
         else:
@@ -46,7 +47,7 @@ if __name__ == '__main__':
     for server in server_list:
         sh_shell = sshPexpect('user','pswd',server, logfile = '/tmp/' + server)
         sh_shell.connect()
-        sh_shell.send_cmd('sudo su fxall')
+        sh_shell.send_cmd_passwd('sudo su fxall')
         sh_shell.send_cmd('ls -latr')
     compare_logfiles(log_file_list)
             
