@@ -38,8 +38,6 @@ class sshPexpect:
     def close_session(self):
         self.c.close()
         self.log_file.close()
-
-
         
 if __name__ == '__main__':
     server_list = ['127.0.0.1']
