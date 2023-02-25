@@ -39,6 +39,23 @@ class sshPexpect:
         self.c.close()
         self.log_file.close()
         
+def compare_logfiles(files):
+    ref_list = []
+    with open (files[0], 'r') as ref:
+        for line in ref:
+            ref_list.append(line)
+    for file in files:
+        with open (file, 'r') as efil:
+            index = 0
+            for line in efil:
+                #print(index)
+                if len(line)>1 and line != ref_list[index]:
+                    if 'ThinkPad-T440' in line :
+                        pass
+                    else:
+                        print (file, line, ref_list[index])
+                index = index + 1
+        
 if __name__ == '__main__':
     server_list = ['127.0.0.1']
     log_file_list = ['/tmp/' + i for i in server_list]
