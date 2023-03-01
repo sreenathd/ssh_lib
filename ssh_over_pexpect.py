@@ -44,16 +44,25 @@ def compare_logfiles(files):
     with open (files[0], 'r') as ref:
         for line in ref:
             ref_list.append(line)
+    #rint(ref_list)
     for file in files:
         with open (file, 'r') as efil:
             index = 0
             for line in efil:
-                #print(index)
-                if len(line)>1 and line != ref_list[index]:
-                    if 'ThinkPad-T440' in line :
-                        pass
-                    else:
-                        print (file, line, ref_list[index])
+                #print(f"index: {index}, line: {line}")
+                if len(line)>1:
+                    compser = line.split()
+                    #print(f"index: {index}, 8th item: {compser[-1]}")
+                    if len(compser) >= 8 :
+                        refserv = ref_list[index].split()
+                        try:
+                            if compser[8] not in refserv[8]:
+                                print (f"comparing line number failed {index}: {compser[8]} with {refserv[8]}")
+                            if len(compser) == 11:
+                                if compser[10] not in refserv[10]:
+                                    print (f"comparing line number failed {index}: {compser[10]} with {refserv[10]}")
+                        except :
+                            pass
                 index = index + 1
         
 if __name__ == '__main__':
