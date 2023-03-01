@@ -19,3 +19,18 @@ def get_glue_status(jobname, runid):
             status = item['JobRunState']
             emessage = item['ErrorMessage']
     return status, emessage
+
+def get_Step_fn_history(executionArn,runid):
+    client = boto3.client('stepfunctions')
+    response = client.get_execution_history(
+        executionArn=executionArn,
+        maxResults=123,
+        reverseOrder=True,
+        nextToken='string',
+        includeExecutionData=True
+    )
+    for item in response['events']:
+        if item['id'] = runid:
+            error = item['activityFailedEventDetails']['error']
+            cause = item['activityFailedEventDetails']['cause']
+    return error, cause
