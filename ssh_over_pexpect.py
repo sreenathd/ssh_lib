@@ -40,29 +40,30 @@ class sshPexpect:
         self.log_file.close()
         
 def compare_logfiles(files):
+    #this function compare all the log files and prints the output to console
     ref_list = []
     with open (files[0], 'r') as ref:
         for line in ref:
             ref_list.append(line)
-    #rint(ref_list)
     for file in files:
         with open (file, 'r') as efil:
             index = 0
             for line in efil:
-                #print(f"index: {index}, line: {line}")
                 if len(line)>1:
+                    if line.startswith ('ls -latr'):
+                       print(line)
                     compser = line.split()
-                    #print(f"index: {index}, 8th item: {compser[-1]}")
-                    if len(compser) >= 8 :
+                    if len(compser) >= 8  and 'fxall fxall' in line and file not in files[0]:
                         refserv = ref_list[index].split()
-                        try:
-                            if compser[8] not in refserv[8]:
-                                print (f"comparing line number failed {index}: {compser[8]} with {refserv[8]}")
-                            if len(compser) == 11:
-                                if compser[10] not in refserv[10]:
-                                    print (f"comparing line number failed {index}: {compser[10]} with {refserv[10]}")
-                        except :
-                            pass
+                        #try:
+                        #print(len(compser))
+                        if len(compser) == 9 and len(refserv)==9 and compser[8] in refserv[8]:
+                           print("comparing failed index:%s, %s:%s and %s:%s "%(index,file,refserv[-1],files[0],compser[-1]))
+                        if len(compser) == 11 and len(refserv)==11:
+                            if compser[10] not in refserv[10]:
+                               print("comparing failed  index:%s,%s:%s and %s:%s "%(index,file,refserv[8:],files[0],compser[8:]))
+                        #except :
+                            #print("error")
                 index = index + 1
         
 if __name__ == '__main__':
