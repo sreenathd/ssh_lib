@@ -1,4 +1,31 @@
 import pexpect
+import subprocess
+
+class readRPM:
+    def __init__(self):
+        self.rpm_file_list = []
+        
+    def read_rpm_contents(self):
+        cmd_list = [['ls', '-latr'],['ls','-latr']]
+        with open('rpm.log', 'w') as logfile:
+            for cmd in cmd_list:
+                subprocess.call(cmd, stdout=logfile, shell=False)
+                
+    def process_rpm_log(self):
+        with open ('rpm.log', 'r') as efil:
+            index = 0
+            for line in efil:
+                if len(line)>1:
+                    if line.startswith ('ls -latr'):
+                       print("Now get folder : %s"%(line.split()[-1]))
+                    compser = line.split()
+                    if len(compser) >= 8  and compser[8] not in ['.','..'] and not line.startswith('d'):
+                        rpm_file_dict = {}
+                        if len(compser) == 9 :
+                            rpm_file_dict[compser[8]] = compser[4]
+                        if len(compser) == 11 :
+                            rpm_file_dict[' '.join(compser[8:])] = compser[4]
+                        self.rpm_file_list.append(rpm_file_dict)
 
 class sshPexpect:
     def __init__(self,username, passwd, servername, logfile = "/tmp/mylog" ):
