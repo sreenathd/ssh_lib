@@ -45,26 +45,35 @@ def compare_logfiles(files):
     with open (files[0], 'r') as ref:
         for line in ref:
             ref_list.append(line)
-    for file in files:
+    for file in files[1:]:
+        ref_file_list = []
+        comp_file_list = []
         with open (file, 'r') as efil:
             index = 0
             for line in efil:
                 if len(line)>1:
                     if line.startswith ('ls -latr'):
-                       print(line)
+                       print("Now comparing diff of folder : %s"%(line.split()[-1]))
+
                     compser = line.split()
                     if len(compser) >= 8  and 'fxall fxall' in line and file not in files[0]:
                         refserv = ref_list[index].split()
                         #try:
                         #print(len(compser))
                         if len(compser) == 9 and len(refserv)==9 and compser[8] in refserv[8]:
-                           print("comparing failed index:%s, %s:%s and %s:%s "%(index,file,refserv[-1],files[0],compser[-1]))
+                            comp_file_list.append(compser[8])
+                            ref_file_list.append(refserv[8])
+                           #print("comparing failed index:%s, %s:%s and %s:%s "%(index,file,refserv[-1],files[0],compser[-1]))
                         if len(compser) == 11 and len(refserv)==11:
                             if compser[10] not in refserv[10]:
-                               print("comparing failed  index:%s,%s:%s and %s:%s "%(index,file,refserv[8:],files[0],compser[8:]))
+                                comp_file_list.append(' '.join(compser[8:]))
+                                ref_file_list.append(' '.join(refserv[8:]))
+                               #print("comparing failed  index:%s,%s:%s and %s:%s "%(index,file,refserv[8:],files[0],compser[8:]))
                         #except :
                             #print("error")
                 index = index + 1
+        print("differences between server : %s and server : %s"%(file, files[0]))
+        print (list(set(comp_file_list).difference(set(ref_file_list))))
         
 if __name__ == '__main__':
     server_list = ['127.0.0.1']
